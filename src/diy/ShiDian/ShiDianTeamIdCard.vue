@@ -110,7 +110,7 @@ import CustomizedCard from '@/diy/CustomizedCard.vue'
 import MyCard from '@/components/Common/MyCard.vue'
 import OperationLogCard from '@/diy/OneClickGoldFish/OperationLogCard.vue'
 import ConnectionPoolManager from '@/utils/connectionPoolManager.js'
-import { PET_DICT } from '@/utils/herolist'
+import { PET_DICT } from '@/utils/HeroList'
 
 const props = defineProps({
   selectedTokenId: {
