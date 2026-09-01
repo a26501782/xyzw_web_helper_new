@@ -62,7 +62,7 @@
       <OperationLogCard 
         page="shidian" 
         card-type="灯神信息"
-        :filter-operations="['刷新灯神信息', '灯神按钮', '切换灯神阵容', '更换科技', '灯神战斗', '批量灯神战斗', '导出灯神信息']"
+        :filter-operations="['刷新灯神信息', '灯神按钮', '切换灯神阵容', '更换科技', '灯神战斗', '批量灯神战斗', '导出灯神信息', '刷新阵容', '切换阵容', '扫荡', '批量灯神按钮', '批量更换科技', '批量扫荡']"
       />
     </template>
   </MyCard>
@@ -1503,7 +1503,7 @@ const lampGodAction = async () => {
       tokenId: token.id,
       tokenName: token.name,
       status: 'success',
-      message: '灯神按钮执行完成'
+      message: `【${token.name || token.id}】灯神按钮执行完成`
     })
   } catch (error) {
     console.error('灯神按钮执行失败:', error)
@@ -1753,7 +1753,7 @@ const lampGodFight = async () => {
       tokenId: token.id,
       tokenName: token.name,
       status: 'success',
-      message: '灯神战斗完成'
+      message: `【${token.name || token.id}】灯神战斗完成`
     })
   } catch (error) {
     console.error('灯神战斗失败:', error)
@@ -1904,7 +1904,7 @@ const batchLampGodFight = async () => {
             tokenId: token.id,
             tokenName: token.name,
             status: 'success',
-            message: '灯神按钮执行完成'
+            message: `【序号${tokenIndex}】[${token.name || token.id}]灯神按钮执行完成`
           })
           return { success: true, token: token }
         } catch (error) {
@@ -2134,7 +2134,7 @@ const batchSweepAction = async () => {
   
   const rangeText = lampGodTokens.value ? `范围${lampGodTokens.value}` : "全部"
   message.info(`开始批量执行扫荡（${rangeText}），共${targetTokens.length}个Token，按序号顺序执行...`)
-  logOperation('shidian', '批量扫荡', {
+  logOperation('fish-helper', '批量扫荡', {
     cardType: '灯神信息',
     status: 'info',
     message: `开始批量执行扫荡，${rangeText}，共${targetTokens.length}个Token`
@@ -2162,24 +2162,24 @@ const batchSweepAction = async () => {
           tokenStore.selectedTokenId = originalSelectedTokenId
           
           message.success(`序号 ${tokenIndex} ${token.name || token.id} 扫荡执行完成`)
-          logOperation('shidian', '批量扫荡', {
+          logOperation('fish-helper', '批量扫荡', {
             cardType: '灯神信息',
             tokenId: token.id,
             tokenName: token.name,
             status: 'success',
-            message: '扫荡执行完成'
+            message: `【序号${tokenIndex}】[${token.name || token.id}]扫荡执行完成`
           })
           return { success: true, token: token }
         } catch (error) {
           const tokenIndex = getTokenIndex(token)
           console.error(`序号 ${tokenIndex} ${token.name || token.id} 扫荡执行失败:`, error)
           message.error(`序号 ${tokenIndex} ${token.name || token.id} 扫荡执行失败: ${error.message || '未知错误'}`)
-          logOperation('shidian', '批量扫荡', {
+          logOperation('fish-helper', '批量扫荡', {
             cardType: '灯神信息',
             tokenId: token.id,
             tokenName: token.name,
             status: 'error',
-            message: `扫荡执行失败: ${error.message || '未知错误'}`
+            message: `【序号${tokenIndex}】[${token.name || token.id}]扫荡执行失败: ${error.message || '未知错误'}`
           })
           return { success: false, token: token, error: error.message || '未知错误' }
         }
@@ -2216,7 +2216,7 @@ const batchSweepAction = async () => {
     const failCount = results.filter(r => !r.success).length
     
     message.success(`批量扫荡完成：成功${successCount}个，失败${failCount}个`)
-    logOperation('shidian', '批量扫荡', {
+    logOperation('fish-helper', '批量扫荡', {
       cardType: '灯神信息',
       status: 'success',
       message: `【批量】批量扫荡完成：成功${successCount}个，失败${failCount}个`
@@ -2224,7 +2224,7 @@ const batchSweepAction = async () => {
   } catch (error) {
     console.error('批量扫荡失败:', error)
     message.error('批量扫荡失败')
-    logOperation('shidian', '批量扫荡', {
+    logOperation('fish-helper', '批量扫荡', {
       cardType: '灯神信息',
       status: 'error',
       message: `【批量】批量扫荡失败: ${error.message || '未知错误'}`
